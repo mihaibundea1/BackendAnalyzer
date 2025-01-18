@@ -1,3 +1,5 @@
+
+
 class PatientsDoctors(db.Model):
     __tablename__ = 'patients_doctors'
 
