@@ -1,0 +1,33 @@
+services:
+  maria-db:
+    image: mariadb
+    volumes:
+      - ./data:/var/lib/mysql           # Persiste datele bazei de date
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql    
+    restart: unless-stopped
+    tty: true
+    ports:
+      - 3308:3306  # Expune portul 3306 al containerului la portul 3308 al gazdei
+    environment:
+      MARIADB_ROOT_PASSWORD: pass1234  # Parola root pentru MariaDB
+      MARIADB_DATABASE: myapp  # Creează baza de date 'myapp'
+      MARIADB_USER: admin  # Creează utilizatorul 'admin'
+      MARIADB_PASSWORD: admin_password  # Parola utilizatorului 'admin'
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "--silent"]  # Verifică sănătatea serviciului
+      start_period: 5s
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    networks:
+      provedb:
+        ipv4_address: 10.10.0.2
+
+
+networks:
+  provedb:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 10.10.0.0/16
+          gateway: 10.10.0.1
