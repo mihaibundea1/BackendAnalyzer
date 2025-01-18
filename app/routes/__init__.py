@@ -1,10 +1,8 @@
-from flask import Blueprint, request, jsonify
-from app.services.image_processing import process_image
+from flask import Flask, Blueprint
 
-main_routes = Blueprint('main_routes', __name__)
+from .user_routes import user_routes
+from .investigation_routes import investigation_routes
 
-@main_routes.route('/upload', methods=['POST'])
-def upload_xray():
-    file = request.files['file']
-    result = process_image(file)
-    return jsonify(result)
+def register_blueprints(app: Flask):
+    app.register_blueprint(user_routes, url_prefix='/users')  # Prefixul '/users'
+    app.register_blueprint(investigation_routes, url_prefix='/investigation')

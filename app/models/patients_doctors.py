@@ -1,4 +1,5 @@
-
+from datetime import datetime
+from .. import db
 
 class PatientsDoctors(db.Model):
     __tablename__ = 'patients_doctors'
@@ -9,3 +10,13 @@ class PatientsDoctors(db.Model):
 
     patient = db.relationship('User', foreign_keys=[patient_id])
     doctor = db.relationship('User', foreign_keys=[doctor_id])
+        
+    def serialize(self):
+        """Transformă obiectul User într-un dict JSON serializabil."""
+        return {
+            'id': self.id,
+            'patient_id': self.patient_id,
+            'doctor_id': self.doctor_id,
+            'patient': self.patient,
+            'doctor': self.doctor
+        }

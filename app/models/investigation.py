@@ -1,4 +1,6 @@
 
+from datetime import datetime
+from .. import db
 
 class Investigation(db.Model):
     __tablename__ = 'investigations'

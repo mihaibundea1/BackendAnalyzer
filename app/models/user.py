@@ -1,6 +1,5 @@
-from flask_sqlalchemy import SQLAlchemy
-
-db = SQLAlchemy()
+from datetime import datetime
+from .. import db
 
 class User(db.Model):
     __tablename__ = 'users'
@@ -16,3 +15,15 @@ class User(db.Model):
 
     investigations = db.relationship('Investigation', backref='user', lazy=True, foreign_keys='Investigation.user_id')
     doctor_investigations = db.relationship('Investigation', backref='doctor', lazy=True, foreign_keys='Investigation.doctor_id')
+
+    def serialize(self):
+        """Transformă obiectul User într-un dict JSON serializabil."""
+        return {
+            'id': self.id,
+            'username': self.username,
+            'email': self.email,
+            'type': self.type,
+            'mfa_secret': self.mfa_secret,
+            'created_at': self.created_at.isoformat(),
+            'updated_at': self.updated_at.isoformat()
+        }
