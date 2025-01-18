@@ -1,6 +1,3 @@
-from .database import DatabaseManager
-
-db_manager = DatabaseManager()
-
-def init_app(app):
-    db_manager.init_app(app)
+# def init_app(app):
+#     from app import db
+#     db.init_app(app)

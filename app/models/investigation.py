@@ -1,6 +1,7 @@
 
 from datetime import datetime
-from .. import db
+from flask import current_app
+from app import db
 
 class Investigation(db.Model):
     __tablename__ = 'investigations'

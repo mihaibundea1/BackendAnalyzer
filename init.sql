@@ -8,7 +8,7 @@ CREATE TABLE users (
     email VARCHAR(255) NOT NULL UNIQUE,
     password_hash VARCHAR(255) NOT NULL,
     type ENUM('patient', 'doctor', 'admin') NOT NULL,
-	mfa_secret VARCHAR(255) DEFAULT NULL;
+	mfa_secret VARCHAR(255) DEFAULT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
@@ -50,7 +50,6 @@ FLUSH PRIVILEGES;
 
 -- Adaugă utilizatorul 'admin' în tabela 'users' cu parola criptată folosind SHA2
 -- Adăugare utilizator admin
-INSERT INTO 
-	users (username, email, password_hash, type)
+INSERT INTO users (username, email, password_hash, type)
 VALUES 
-	('admin', 'mihaibundea1@gmail.com', SHA2('admin', 256), 'admin'); 
+    ('admin', 'mihaibundea1@gmail.com', SHA2('admin', 256), 'admin');
