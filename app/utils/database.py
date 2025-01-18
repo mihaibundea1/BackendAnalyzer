@@ -13,18 +13,12 @@ class SingletonMeta(type):
 class LocalMySQL(metaclass=SingletonMeta):
     def __init__(self):
         # Preluăm configurările din Config
-        self.host = Config.SQLALCHEMY_DATABASE_URI.split('@')[1].split(':')[0]
-        self.port = int(Config.SQLALCHEMY_DATABASE_URI.split(':')[2].split('/')[0])
-        self.user = Config.SQLALCHEMY_DATABASE_URI.split('//')[1].split(':')[0]
-        self.password = Config.SQLALCHEMY_DATABASE_URI.split(':')[1].split('@')[0][2:]
-        self.database = Config.SQLALCHEMY_DATABASE_URI.split('/')[-1]
-        self.engine = None
         self.create_engine()
 
     def create_engine(self):
         try:
             self.engine = create_engine(
-                f'mysql+pymysql://{self.user}:{self.password}@{self.host}:{self.port}/{self.database}',
+                Config.SQLALCHEMY_DATABASE_URI,
                 pool_pre_ping=True
             )
             print("SQLAlchemy engine created")
