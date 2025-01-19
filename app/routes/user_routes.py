@@ -1,7 +1,7 @@
 from flask import Blueprint, request, jsonify
 from app.services.user_service import UserService
 
-user_routes = Blueprint('users', __name__)
+user_routes = Blueprint('/users', __name__)
 
 # Ruta corectă pentru localhost:5000/users pentru GET
 @user_routes.route('/', methods=['GET'])

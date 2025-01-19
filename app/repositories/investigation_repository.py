@@ -15,8 +15,10 @@ class InvestigationRepository:
     def create(investigation_data):
         try:
             investigation = Investigation(**investigation_data)
+
             db.session.add(investigation)
             db.session.commit()
+            
             return investigation
         except SQLAlchemyError as e:
             db.session.rollback()

@@ -13,3 +13,15 @@ class Investigation(db.Model):
     doctor_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete='SET NULL'), nullable=True)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+    def serialize(self):
+        return {
+            "id": self.id,
+            "user_id": self.user_id,
+            "image_path": self.image_path,
+            "diagnostic": self.diagnostic,
+            "description": self.description,
+            "doctor_id": self.doctor_id,
+            "created_at": self.created_at,
+            "updated_at": self.updated_at
+        }

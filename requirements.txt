@@ -2,3 +2,5 @@ flask
 sqlalchemy
 flask-sqlalchemy
 pymysql
+b2sdk
+python-dotenv
