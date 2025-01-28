@@ -1,4 +1,5 @@
 from app.services.xray_service_binary import XRayServiceBinary
+from app.services.xray_multi_service import xray_multi_service
 
 def create_xray_service(model_path, model_type='binary'):
     """

@@ -6,3 +6,4 @@ b2sdk
 python-dotenv
 torch
 torchvision
+scikit-learn
