@@ -1,6 +1,7 @@
 from flask import Blueprint, jsonify, request
 from app.services.xray_service_binary import xray_binary_service
 from app.utils.file_utils import save_temp_file
+import os
 
 xray_binary_bp = Blueprint('xray_binary', __name__)
 
