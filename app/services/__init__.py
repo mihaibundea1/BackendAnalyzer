@@ -1,12 +1,9 @@
-from app.services.xray_service_binary import XRayServiceBinary
-from app.services.xray_multi_service import xray_multi_service
+from .xray_service_binary import xray_binary_service
+from .xray_service_multi import xray_multi_service
 
-def create_xray_service(model_path, model_type='binary'):
-    """
-    Factory method pentru crearea instanței XRayService, în funcție de tipul de model.
-    """
-    if model_type == 'binary':
-        return XRayServiceBinary(model_path=model_path)
-    else: 
-        return None
+__all__ = ['xray_binary_service', 'xray_multi_service']
 
+def register_services(app):
+    # Initialize services
+    xray_binary_service.load_model()
+    xray_multi_service.load_model()

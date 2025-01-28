@@ -3,14 +3,16 @@ from .config import Config
 from .extensions import db  # Import from extensions
 from .routes import register_blueprints
 from .utils import initialize_blackblaze
-from .services import create_xray_service
+from .services import register_services
 
 def create_app():
     app = Flask(__name__)
     app.config.from_object(Config)
 
-    db.init_app(app)  # Initialize db with the app
+    # Registering the pytorch models
+    register_services(app)
 
+    # Register the routes blueprints
     register_blueprints(app)
 
     app.b2_api = initialize_blackblaze(
@@ -18,23 +20,38 @@ def create_app():
         app.config["APPLICATION_KEY"]
     )
 
-    # create_xray_service('app/models/pytorch_models/chest_xray_binary.pth', model_type='binary')
-
     @app.route('/test-model')
     def test_model():
         try:
-            # Get the initialized model from your service
-            model_service = create_xray_service('app/models/pytorch_models/chest_xray_binary.pth')
+            # Correct import statement
+            from app.services.xray_service_binary import xray_binary_service
             
             # Test with a sample image (replace with your test image path)
             test_image = 'app/test.jpeg'
-            probabilities = model_service.classify_image(test_image)
+            probabilities = xray_binary_service.predict_image(test_image)
             
             return {
                 'status': 'success',
-                'predictions': probabilities.tolist()
+                'predictions': probabilities
             }
         except Exception as e:
             return {'status': 'error', 'message': str(e)}, 500
     
+    @app.route('/test-model-multi')
+    def test_model_multi():
+        try:
+            # Correct import statement
+            from app.services.xray_service_multi import xray_multi_service
+            
+            # Test with a sample image (replace with your test image path)
+            test_image = 'app/test.jpeg'
+            probabilities = xray_multi_service.predict_image(test_image)
+            
+            return {
+                'status': 'success',
+                'predictions': probabilities
+            }
+        except Exception as e:
+            return {'status': 'error', 'message': str(e)}, 500
+
     return app

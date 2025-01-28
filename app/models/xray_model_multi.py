@@ -18,7 +18,7 @@ class DenseNet121Multi(nn.Module):
         return self.densenet121(x)
 
     @classmethod
-    def load_model(cls, checkpoint_path='models/pytorch_models/chest_xray_multi.pth.tar'):
+    def load_model(cls, checkpoint_path='app/models/pytorch_models/chest_xray_multi.pth.tar'):
         model = cls().cuda()
         checkpoint = torch.load(checkpoint_path)
         state_dict = {k.replace('module.', ''): v for k, v in checkpoint['state_dict'].items()}
