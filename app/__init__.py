@@ -44,7 +44,7 @@ def create_app():
             from app.services.xray_service_multi import xray_multi_service
             
             # Test with a sample image (replace with your test image path)
-            test_image = 'app/test.jpeg'
+            test_image = 'app/hernia.png'
             probabilities = xray_multi_service.predict_image(test_image)
             
             return {
@@ -54,22 +54,5 @@ def create_app():
         except Exception as e:
             return {'status': 'error', 'message': str(e)}, 500
 
-
-    @app.route('/test-llm')
-    def test_llm():
-        try:
-            # Correct import statement
-            from app.services.xray_to_text import xray_to_text_service
-            
-            # Test with a sample image (replace with your test image path)
-            test_image = 'app/test.jpeg'
-            probabilities = xray_to_text_service.predict_image(test_image)
-            
-            return {
-                'status': 'success',
-                'predictions': probabilities
-            }
-        except Exception as e:
-            return {'status': 'error', 'message': str(e)}, 500
 
     return app
