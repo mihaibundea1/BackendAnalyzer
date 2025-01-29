@@ -27,7 +27,7 @@ def create_app():
             from app.services.xray_service_binary import xray_binary_service
             
             # Test with a sample image (replace with your test image path)
-            test_image = 'app/test.jpeg'
+            test_image = 'app/pneumo_emphizem.png'
             probabilities = xray_binary_service.predict_image(test_image)
             
             return {
@@ -44,7 +44,7 @@ def create_app():
             from app.services.xray_service_multi import xray_multi_service
             
             # Test with a sample image (replace with your test image path)
-            test_image = 'app/hernia.png'
+            test_image = 'app/pneumo_emphizem.png'
             probabilities = xray_multi_service.predict_image(test_image)
             
             return {
