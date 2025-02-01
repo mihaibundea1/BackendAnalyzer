@@ -18,7 +18,7 @@ def get_user(user_id):
     return jsonify({'error': 'User not found'}), 404
 
 # Ruta pentru POST pe /users pentru a crea un utilizator
-@user_routes.route('/', methods=['POST'])
+@user_routes.route('/register', methods=['POST'])
 def create_user():
     data = request.json
     new_user = UserService.create_user(data)
