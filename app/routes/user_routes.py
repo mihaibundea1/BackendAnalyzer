@@ -1,16 +1,21 @@
 from flask import Blueprint, request, jsonify
 from app.services.user_service import UserService
+from flask_jwt_extended import jwt_required, get_jwt_identity
 
 user_routes = Blueprint('/users', __name__)
 
 # Ruta corectă pentru localhost:5000/users pentru GET
 @user_routes.route('/', methods=['GET'])
+@jwt_required()
 def get_users():
+    current_user = get_jwt_identity()
+    print("current_user", current_user)
     users = UserService.get_all_users()
     return jsonify([user.serialize() for user in users])
 
 # Ruta pentru localhost:5000/users/<user_id> pentru GET un utilizator specific
 @user_routes.route('/<int:user_id>', methods=['GET'])
+
 def get_user(user_id):
     user = UserService.get_user_by_id(user_id)
     if user:

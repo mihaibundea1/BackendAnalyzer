@@ -1,6 +1,6 @@
 from flask import Flask
 from .config import Config
-from .extensions import db  # Import from extensions
+from .extensions import db, jwt # Import from extensions
 from .routes import register_blueprints
 from .utils import initialize_blackblaze
 from .services import register_services
@@ -8,6 +8,9 @@ from .services import register_services
 def create_app():
     app = Flask(__name__)
     app.config.from_object(Config)
+
+    # Initialize JWT
+    jwt.init_app(app)
 
     # Registering the pytorch models
     register_services(app)
