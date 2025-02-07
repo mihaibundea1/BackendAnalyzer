@@ -6,11 +6,11 @@ from flask_jwt_extended import (
     get_jwt,
     get_jwt_identity
 )
-from extensions import jwt
-from blacklist import blacklist  # presupunând că blacklist-ul este definit într-un modul separat
-from app.services import UserService  # Asigură-te că calea este corectă
+from app.extensions import jwt
+from app.utils.blacklist import blacklist  # presupunând că blacklist-ul este definit într-un modul separat
+from app.services.user_service import UserService  # Asigură-te că calea este corectă
 
-auth_routes = Blueprint("auth", __name__)
+auth_bp = Blueprint("auth", __name__)
 
 # Exemplu simplu de "bază de date" a utilizatorilor
 users = {"user_exemplu": "parola_exemplu"}
