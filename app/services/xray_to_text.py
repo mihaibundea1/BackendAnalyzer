@@ -2,6 +2,7 @@ from PIL import Image
 import torch
 from transformers import BlipForConditionalGeneration, BlipProcessor, TextIteratorStreamer
 from threading import Thread
+from queue import Empty
 
 class XRayToTextService:
     def __init__(self):
