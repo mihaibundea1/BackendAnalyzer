@@ -13,9 +13,9 @@ class XRayToTextService:
 
     def load_model(self):
         if not self.loaded:
+            # Load the model and processor
             self.processor = BlipProcessor.from_pretrained("nathansutton/generate-cxr")
-            self.model = BlipForConditionalGeneration.from_pretrained(
-                "Salesforce/blip-image-captioning-base").to(self.device)
+            self.model = BlipForConditionalGeneration.from_pretrained("nathansutton/generate-cxr").to(self.device)
             self.model.eval()
             self.loaded = True
 
