@@ -1,5 +1,6 @@
 from app.models import User
 from app import db
+import pyotp
 
 class UserService:
     @staticmethod
@@ -19,13 +20,15 @@ class UserService:
 
     @staticmethod
     def create_user(data):
-        """Creează un utilizator nou."""
+        """Creează un utilizator nou și generează un secret MFA dacă nu este furnizat."""
+        mfa_secret = pyotp.random_base32()
+
         new_user = User(
             username=data.get('username'),
             email=data.get('email'),
             password_hash=data.get('password_hash'),
             type=data.get('type'),
-            mfa_secret=data.get('mfa_secret')
+            mfa_secret=mfa_secret
         )
         db.session.add(new_user)
         db.session.commit()
