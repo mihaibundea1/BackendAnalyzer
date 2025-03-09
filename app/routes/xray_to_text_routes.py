@@ -21,12 +21,16 @@ def stream_report():
             try:
                 for token in xray_to_text_service.stream_report(temp_path, indication):
                     yield f"data: {token}\n\n"
+            except GeneratorExit:
+                logging.info("Conexiunea client închisă, oprire generare...")
+                raise  # Propagate GeneratorExit to comply with the generator protocol
             except Exception as e:
                 logging.error(f"Stream error: {str(e)}")
                 yield f"data: [ERROR] {str(e)}\n\n"
             finally:
                 os.remove(temp_path)
-                yield "event: end\ndata: stream_complete\n\n"
+                # Removed the yield for the end event to avoid issues during client disconnect
+
 
         return Response(
             stream_with_context(generate_stream()),

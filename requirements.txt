@@ -12,3 +12,4 @@ accelerate>=0.26.0
 jsonify==0.5
 pyotp==2.9.0
 flask-jwt-extended==4.5.3
+flask_cors=5.0.1

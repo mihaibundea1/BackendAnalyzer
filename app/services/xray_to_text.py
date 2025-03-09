@@ -3,6 +3,7 @@ import torch
 from transformers import BlipForConditionalGeneration, BlipProcessor, TextIteratorStreamer
 from threading import Thread
 from queue import Empty
+import logging
 
 class XRayToTextService:
     def __init__(self):
@@ -40,17 +41,17 @@ class XRayToTextService:
             
         return self.processor.decode(output[0], skip_special_tokens=True)
 
+    import logging  # Add this import at the top of the file
+
     def stream_report(self, image_path, indication):
         self.load_model()
         inputs = self.prepare_inputs(image_path, indication)
-        
         streamer = TextIteratorStreamer(
             self.processor.tokenizer,
             skip_prompt=True,
             skip_special_tokens=True,
-            timeout=300
+            timeout=1  # Check frequently for new tokens
         )
-        
         gen_kwargs = {
             **inputs,
             "max_new_tokens": 512,
@@ -60,22 +61,32 @@ class XRayToTextService:
             "temperature": 0.7
         }
         
+        # Optionally, create a cancellation event:
+        # self.cancel_event = threading.Event()
+        # And pass it to a wrapper that checks for cancellation
+        
         generation_thread = Thread(target=self.model.generate, kwargs=gen_kwargs)
+        generation_thread.daemon = True  # Mark thread as daemon so it won't block exit
         generation_thread.start()
         
         try:
-            while True:
+            while generation_thread.is_alive():
                 try:
-                    for token in streamer:
-                        if token:
-                            yield token
+                    token = streamer.__next__()
+                    yield token
+                except StopIteration:
                     break
                 except Empty:
-                    if not generation_thread.is_alive():
-                        break
                     continue
+        except GeneratorExit:
+            logging.info("Conexiunea client închisă, oprire generare...")
+            raise
         finally:
             if generation_thread.is_alive():
-                generation_thread.join(timeout=1)
+                generation_thread.join(timeout=2)
+            if generation_thread.is_alive():
+                logging.warning("Thread-ul de generare nu s-a închis corect")
+
+                        
 
 xray_to_text_service = XRayToTextService()
